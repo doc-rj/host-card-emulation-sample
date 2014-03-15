@@ -21,11 +21,11 @@ public class MyHostApduService extends HostApduService {
 	}
 
 	private byte[] getWelcomeMessage() {
-		return "Hello Desktop!".getBytes();
+		return getString(R.string.select_success).getBytes();
 	}
 
 	private byte[] getNextMessage() {
-		return ("Message from android: " + messageCounter++).getBytes();
+		return (getString(R.string.send_msg_prefix) + " " + messageCounter++).getBytes();
 	}
 
 	private boolean selectAidApdu(byte[] apdu) {

@@ -41,24 +41,33 @@ public class MainActivity extends Activity implements OnMessageReceived, ReaderC
 	@Override
 	public void onTagDiscovered(Tag tag) {
 		IsoDep isoDep = IsoDep.get(tag);
-		IsoDepTransceiver transceiver = new IsoDepTransceiver(isoDep, this);
-		Thread thread = new Thread(transceiver);
-		thread.start();
+		if (isoDep == null) {
+		    byte[] msg = getString(R.string.wrong_tag_err).getBytes();
+		    onError(msg);
+		} else {
+		    IsoDepTransceiver transceiver = new IsoDepTransceiver(isoDep, this);
+		    Thread thread = new Thread(transceiver);
+		    thread.start();
+		}
 	}
 
-	@Override
+    @Override
 	public void onMessage(final byte[] message) {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				isoDepAdapter.addMessage(new String(message));
-			}
-		});
+        onMessageAndType(message, 0);
 	}
 
 	@Override
-	public void onError(Exception exception) {
-		onMessage(exception.getMessage().getBytes());
+	public void onError(final byte[] message) {
+	    onMessageAndType(message, -1);
+	}
+	
+	private void onMessageAndType(final byte[] message, final int type) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                isoDepAdapter.addMessage(new String(message), type);
+            }
+        });
 	}
 }
