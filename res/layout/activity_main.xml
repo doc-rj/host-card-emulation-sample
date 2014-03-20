@@ -12,13 +12,26 @@
         android:id="@+id/intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/activity_into" />
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="left"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="@dimen/font_small"
+        android:text="@string/activity_intro" />
+
+    <View
+        android:id="@+id/splitter" 
+        style="@style/splitter"
+        android:layout_below="@+id/intro"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="0dp" />    
 
     <ListView
         android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/intro" >
-    </ListView>
-
+	    style="@style/list"
+        android:layout_below="@+id/splitter"
+        android:divider="@null"
+        android:listSelector="#00000000"
+        android:paddingTop="@dimen/margin_window"
+        android:paddingBottom="@dimen/margin_window"
+        android:transcriptMode="alwaysScroll" />
 </RelativeLayout>

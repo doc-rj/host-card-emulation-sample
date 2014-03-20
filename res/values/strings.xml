@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">HceDemo</string>
     <string name="action_settings">Settings</string>
-    <string name="activity_into">Reader mode active</string>
+    <string name="activity_intro">Reader mode active&#8230;</string>
     <string name="aiddescription">aiddescription</string>
     <string name="servicedesc">servicedesc</string>
     <string name="wrong_tag_err">Not ISO-DEP, emulate card with HceDemo AID!</string>
     <string name="wrong_resp_err">Select fail, emulate card with HceDemo AID!</string>
     <string name="select_success">Success, HceDemo AID selected!</string>
     <string name="select_success_prefix">Success</string>
-    <string name="send_msg_prefix">Android HceDemo Msg</string>
-    <string name="rcv_msg_header">Rsp[</string>
-    
+    <string name="hce_msg_prefix">Android HceDemo Msg</string>
+    <string name="reader_msg_prefix">Android Reader Msg</string>
 </resources>

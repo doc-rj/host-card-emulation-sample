@@ -25,7 +25,7 @@ public class MyHostApduService extends HostApduService {
 	}
 
 	private byte[] getNextMessage() {
-		return (getString(R.string.send_msg_prefix) + " " + messageCounter++).getBytes();
+		return (getString(R.string.hce_msg_prefix) + " " + messageCounter++).getBytes();
 	}
 
 	private boolean selectAidApdu(byte[] apdu) {

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="text_normal">#FF505050</color>
+    <color name="bg_splitter">#FFBABABA</color>
+    <color name="bg_window">#FFF0F0F0</color>
+</resources>
+

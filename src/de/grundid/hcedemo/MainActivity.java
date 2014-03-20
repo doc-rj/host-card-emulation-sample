@@ -7,67 +7,73 @@ import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.os.Bundle;
 import android.widget.ListView;
-import de.grundid.hcedemo.IsoDepTransceiver.OnMessageReceived;
+import de.grundid.hcedemo.IsoDepTransceiver.OnMessage;
 
-public class MainActivity extends Activity implements OnMessageReceived, ReaderCallback {
+public class MainActivity extends Activity implements OnMessage, ReaderCallback {
 
-	private NfcAdapter nfcAdapter;
-	private ListView listView;
-	private IsoDepAdapter isoDepAdapter;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		listView = (ListView)findViewById(R.id.listView);
-		isoDepAdapter = new IsoDepAdapter(getLayoutInflater());
-		listView.setAdapter(isoDepAdapter);
-		nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		nfcAdapter.enableReaderMode(this, this, NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
-				null);
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		nfcAdapter.disableReaderMode(this);
-	}
-
-	@Override
-	public void onTagDiscovered(Tag tag) {
-		IsoDep isoDep = IsoDep.get(tag);
-		if (isoDep == null) {
-		    byte[] msg = getString(R.string.wrong_tag_err).getBytes();
-		    onError(msg);
-		} else {
-		    IsoDepTransceiver transceiver = new IsoDepTransceiver(isoDep, this);
-		    Thread thread = new Thread(transceiver);
-		    thread.start();
-		}
-	}
+    private NfcAdapter mNfcAdapter;
+    private ListView mListView;
+    private IsoDepAdapter mIsoDepAdapter;
 
     @Override
-	public void onMessage(final byte[] message) {
-        onMessageAndType(message, 0);
-	}
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mListView = (ListView)findViewById(R.id.listView);
+        mIsoDepAdapter = new IsoDepAdapter(getLayoutInflater());
+        mListView.setAdapter(mIsoDepAdapter);
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+    }
 
-	@Override
-	public void onError(final byte[] message) {
-	    onMessageAndType(message, -1);
-	}
-	
-	private void onMessageAndType(final byte[] message, final int type) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        mNfcAdapter.enableReaderMode(this, this,
+                NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
+                null);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mNfcAdapter.disableReaderMode(this);
+    }
+
+    @Override
+    public void onTagDiscovered(Tag tag) {
+        IsoDep isoDep = IsoDep.get(tag);
+        if (isoDep == null) {
+            byte[] msg = getString(R.string.wrong_tag_err).getBytes();
+            onError(msg);
+        } else {
+            IsoDepTransceiver transceiver = new IsoDepTransceiver(isoDep, this);
+            Thread thread = new Thread(transceiver);
+            thread.start();
+        }
+    }
+
+    @Override
+    public void onMessageRcv(final byte[] message) {
+        onMessageAndType(new String(message), 0);
+    }
+    
+    @Override
+    public void onMessageSend(final String message) {
+        onMessageAndType(message, 1);
+    }
+
+    @Override
+    public void onError(final byte[] message) {
+        onMessageAndType(new String(message), -1);
+    }
+    
+    private void onMessageAndType(final String message, final int type) {
         runOnUiThread(new Runnable() {
 
             @Override
             public void run() {
-                isoDepAdapter.addMessage(new String(message), type);
+                mIsoDepAdapter.addMessage(message, type);
             }
         });
-	}
+    }
 }
